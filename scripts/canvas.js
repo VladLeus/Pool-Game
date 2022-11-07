@@ -3,12 +3,23 @@ function Canvas2D(){
     this.canvasContext = this.canvas.getContext('2d'); // 2d cuz we have a two-dimensional game
 }
 
-Canvas2D.prototype.clear = () => {
-    this.canvasContext.clearRect(0,0, this._canvas.width, this.canvas.height);
+Canvas2D.prototype.clear = function ()  {
+    this.canvasContext.clearRect(0,0, this.canvas.width, this.canvas.height);
 }
 
-Canvas2D.prototype.drawImage = (image, position) => {
-    this.canvasContext.drawImage(image, position.x, position.y);
+Canvas2D.prototype.drawImage =  function (image, position, origin)  {
+
+    if  (!position){
+        position = new Vector()
+    }
+    if (!origin){
+        origin = new Vector()
+    }
+    this.canvasContext.save()
+    this.canvasContext.translate(position.x, position.y)
+
+    this.canvasContext.drawImage(image, -origin.x, -origin.y);
+    this.canvasContext.restore()
 }
 
 let canvas = new Canvas2D();
