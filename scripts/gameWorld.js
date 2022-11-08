@@ -1,4 +1,4 @@
-const delta = 1/100
+const delta = 1/177
 
 function GameWorld(){
     //Contains an every physical game objects and render it each frame
@@ -24,14 +24,21 @@ function GameWorld(){
     this.whiteBall = this.spawnBalls[this.spawnBalls.length - 1]
     this.stick = new Stick(new Vector(413,413), this.whiteBall.shoot.bind(this.whiteBall))
 
+    this.gameTable = {
+        topBorderY: 50,
+        rightBorderX: 1400,
+        bottomBorderY: 760,
+        leftBorderX: 70
+    }
 }
+
 
 GameWorld.prototype.handleTheCollisions = function () {
     for (let i = 0; i < this.spawnBalls.length; i++){
+        this.spawnBalls[i].collideWith(this.gameTable)
         for (let j = i + 1; j < this.spawnBalls.length; j++){
             let firstBall = this.spawnBalls[i]
             let secBall = this.spawnBalls[j]
-
             firstBall.collideWith(secBall)
         }
     }

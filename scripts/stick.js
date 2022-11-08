@@ -1,5 +1,6 @@
 const stick_origin = new Vector(970,11)
 const stick_shot_origin = new Vector(950,11)
+const max_power = 5000
 
 
 function Stick(position, onShoot){
@@ -35,7 +36,10 @@ Stick.prototype.rotationUpdate = function (){
 }
 
 Stick.prototype.increasingPower = function () {
-    this.power += 100
+    if (this.power > max_power){
+        return
+    }
+    this.power += 140
     this.origin.x += 5
 }
 

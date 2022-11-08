@@ -1,5 +1,6 @@
 const ball_origin = new Vector(25,25)
 const ball_diameter = 38;
+const ball_radius = ball_diameter / 2
 
 function Ball(position, color){
     this.position = position
@@ -11,7 +12,7 @@ function Ball(position, color){
 Ball.prototype.update = function (delta){
     this.position.addTo(this.velocity.mult(delta))
 
-    this.velocity = this.velocity.mult(0.98)
+    this.velocity = this.velocity.mult(0.984)
     if (this.velocity.calcLength() < 5){
         this.velocity = new Vector()
         this.moving = false
@@ -27,32 +28,40 @@ Ball.prototype.shoot = function (power, rotation) {
     this.moving = true
 }
 
-Ball.prototype.collideWith = function (ball) {
+Ball.prototype.collideWithBalls = function (ball){
     //find a normal vector
 
-    let n = this.position.subtract(ball.position)
+    const n = this.position.subtract(ball.position)
 
     //find distance
-    let distance = n.length
+    const distance = n.calcLength()
 
     if (distance > ball_diameter){
         return
     }
 
+    //find minimum translation distance
+
+    const minimumTransDist = n.mult((ball_diameter - distance) / distance)
+
+    //push/pull balls apart
+
+    this.position = this.position.add(minimumTransDist.mult(1/2))
+    ball.position = ball.position.subtract(minimumTransDist.mult(1/2))
+
     //find the unit normal vector
 
-    let un = n.mult(1/n.length)
+    const un = n.mult(1/n.calcLength())
 
     // find unit tangent vector
-
-    let ut = new Vector(-un.y, un.x)
+    const ut = new Vector(-un.y, un.x)
 
     //project velocities onto the unit normal and unit tangent vector
 
-    let v1n = un.dot(this.velocity)
-    let v1t = ut.dot(this.velocity)
-    let v2n = un.dot(ball.velocity)
-    let v2t = ut.dot(ball.velocity)
+    const v1n = un.dot(this.velocity)
+    const v1t = ut.dot(this.velocity)
+    const v2n = un.dot(ball.velocity)
+    const v2t = ut.dot(ball.velocity)
 
     //find new normal velocities
 
@@ -61,9 +70,9 @@ Ball.prototype.collideWith = function (ball) {
 
     //convert the scalar normal anf the tangential velocities into vectors
     v1nTagged = un.mult(v1nTagged)
-    let v1tTagged = ut.mult(v1t)
+    const v1tTagged = ut.mult(v1t)
     v2nTagged = un.mult(v2nTagged)
-    let v2tTagged = ut.mult(v2t)
+    const v2tTagged = ut.mult(v2t)
 
     //update velocities
     this.velocity = v1nTagged.add(v1tTagged)
@@ -71,4 +80,80 @@ Ball.prototype.collideWith = function (ball) {
 
     this.moving = true
     ball.moving = true
+}
+Ball.prototype.collideWithTable = function (table){
+    if (!this.moving){
+        return
+    }
+
+    let collided = false
+
+    if (this.position.y <= table.topBorderY + ball_radius){
+        this.velocity = new Vector(this.velocity.x, -this.velocity.y)
+        collided = true
+    }
+    if (this.position.x >= table.rightBorderX + ball_radius){
+        this.velocity = new Vector(-this.velocity.x, this.velocity.y)
+        collided = true
+    }
+    if (this.position.y >= table.bottomBorderY - ball_radius){
+        this.velocity = new Vector(this.velocity.x, -this.velocity.y)
+        collided = true
+    }
+    if (this.position.x <= table.leftBorderX + ball_radius){
+        this.velocity = new Vector(-this.velocity.x, this.velocity.y)
+        collided = true
+    }
+
+    if (collided){
+        this.velocity = this.velocity.mult(0.984)
+    }
+}
+
+Ball.prototype.ballInHole = function (){
+
+    this.holesCords = [
+        new Vector(50, 60),
+        new Vector(750, 60),
+        new Vector(1410, 60),
+        new Vector(1410, 780),
+        new Vector(750, 780),
+        new Vector(60, 780)
+    ]
+
+    if (this.position.x === this.holesCords[0].x && this.position.y === this.holesCords[0].y){
+        return true
+    } else if (this.position.x === this.holesCords[1].x && this.position.y === this.holesCords[1].y){
+        return true
+    }else if (this.position.x === this.holesCords[2].x && this.position.y === this.holesCords[0].y){
+        return true
+    }else if (this.position.x === this.holesCords[3].x && this.position.y === this.holesCords[3].y){
+        return true
+    }else if (this.position.x === this.holesCords[4].x && this.position.y === this.holesCords[4].y){
+        return true
+    }else if (this.position.x === this.holesCords[5].x && this.position.y === this.holesCords[5].y){
+        return true
+    }
+    return false
+}
+
+Ball.prototype.eraseBall = function () {
+    this.position.x = null
+    this.position.y = null
+    this.sprite = null
+    this.velocity = null
+}
+
+Ball.prototype.collideWith = function (object) {
+    if (object instanceof Ball){
+        this.collideWithBalls(object)
+    }
+    else{
+        if (this.ballInHole()){
+            this.eraseBall()
+        }
+        else {
+            this.collideWithTable(object)
+        }
+    }
 }
