@@ -1,9 +1,9 @@
 let sprites = {}
-let assestStillLoading = 0;
+let assetsStillLoading = 0;
 
-function assetsLoagingCheck(callback){
-    if(assestStillLoading){
-        requestAnimationFrame(assetsLoagingCheck.bind(this, callback))
+function assetsLoadingCheck(callback){
+    if(assetsStillLoading){
+        requestAnimationFrame(assetsLoadingCheck.bind(this, callback))
     }
     else {
         callback()
@@ -13,13 +13,13 @@ function assetsLoagingCheck(callback){
 function loading(callback){
 
     function loadSprite(file){
-        assestStillLoading++
+        assetsStillLoading++
 
         let img = new Image();
         img.src = "./assets/sprites/" + file;
 
         img.onload = () => {
-            assestStillLoading--
+            assetsStillLoading--
         }
 
         return img
@@ -29,5 +29,5 @@ function loading(callback){
     sprites.stick = loadSprite('spr_stick.png')
     sprites.whiteBall = loadSprite('spr_whiteBall.png')
 
-    assetsLoagingCheck(callback)
+    assetsLoadingCheck(callback)
 }
