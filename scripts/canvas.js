@@ -22,4 +22,25 @@ Canvas2D.prototype.drawImage =  function (image, position, origin, rotation = 0)
     this.canvasContext.restore()
 }
 
+Canvas2D.prototype.drawText = function (text, position, origin, color, textAlign, fontname, fontsize) {
+    var canvasScale = this.scale;
+
+    position = typeof position !== 'undefined' ? position : Vector2.zero;
+    origin = typeof origin !== 'undefined' ? origin : Vector2.zero;
+    color = typeof color !== 'undefined' ? color : Color.black;
+    textAlign = typeof textAlign !== 'undefined' ? textAlign : "top";
+    fontname = typeof fontname !== 'undefined' ? fontname : "sans-serif";
+    fontsize = typeof fontsize !== 'undefined' ? fontsize : "20px";
+
+    this._canvasContext.save();
+    this._canvasContext.scale(canvasScale.x, canvasScale.y);
+    this._canvasContext.translate(position.x - origin.x, position.y - origin.y);
+    this._canvasContext.textBaseline = 'top';
+    this._canvasContext.font = fontsize + " " + fontname;
+    this._canvasContext.fillStyle = color.toString();
+    this._canvasContext.textAlign = textAlign;
+    this._canvasContext.fillText(text, 0, 0);
+    this._canvasContext.restore();
+};
+
 let canvas = new Canvas2D();

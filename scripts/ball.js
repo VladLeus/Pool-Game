@@ -1,12 +1,15 @@
 const ball_origin = new Vector(25,25)
-const ball_diameter = 38;
+const ball_diameter = 38
 const ball_radius = ball_diameter / 2
+const hole_radius = 46
 
 function Ball(position, color){
     this.position = position
     this.velocity = new Vector()
     this.moving = false
     this.sprite = getBallsSpritesByCol(color)
+    this.visible = true
+    this.inHole = false
 }
 
 Ball.prototype.update = function (delta){
@@ -110,50 +113,9 @@ Ball.prototype.collideWithTable = function (table){
     }
 }
 
-Ball.prototype.ballInHole = function (){
-
-    this.holesCords = [
-        new Vector(50, 60),
-        new Vector(750, 60),
-        new Vector(1410, 60),
-        new Vector(1410, 780),
-        new Vector(750, 780),
-        new Vector(60, 780)
-    ]
-
-    if (this.position.x === this.holesCords[0].x && this.position.y === this.holesCords[0].y){
-        return true
-    } else if (this.position.x === this.holesCords[1].x && this.position.y === this.holesCords[1].y){
-        return true
-    }else if (this.position.x === this.holesCords[2].x && this.position.y === this.holesCords[0].y){
-        return true
-    }else if (this.position.x === this.holesCords[3].x && this.position.y === this.holesCords[3].y){
-        return true
-    }else if (this.position.x === this.holesCords[4].x && this.position.y === this.holesCords[4].y){
-        return true
-    }else if (this.position.x === this.holesCords[5].x && this.position.y === this.holesCords[5].y){
-        return true
-    }
-    return false
-}
-
-Ball.prototype.eraseBall = function () {
-    this.position.x = null
-    this.position.y = null
-    this.sprite = null
-    this.velocity = null
-}
-
 Ball.prototype.collideWith = function (object) {
     if (object instanceof Ball){
         this.collideWithBalls(object)
     }
-    else{
-        if (this.ballInHole()){
-            this.eraseBall()
-        }
-        else {
-            this.collideWithTable(object)
-        }
-    }
+    else this.collideWithTable(object)
 }

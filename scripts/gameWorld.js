@@ -23,6 +23,7 @@ function GameWorld(){
 
     this.whiteBall = this.spawnBalls[this.spawnBalls.length - 1]
     this.stick = new Stick(new Vector(413,413), this.whiteBall.shoot.bind(this.whiteBall))
+    this.policy = new GamePolicy()
 
     this.gameTable = {
         topBorderY: 50,
@@ -47,6 +48,7 @@ GameWorld.prototype.handleTheCollisions = function () {
 GameWorld.prototype.update = function ()  {
 
     this.handleTheCollisions()
+    this.policy.handleBallInHole()
     this.stick.update()
 
     for (let i = 0; i < this.spawnBalls.length; i++){

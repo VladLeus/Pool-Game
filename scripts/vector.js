@@ -32,3 +32,7 @@ Vector.prototype.dot = function (vector){
 Vector.prototype.calcLength = function () {
     return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
 }
+
+Vector.prototype.distanceFrom = function(obj){
+    return Math.sqrt((this.x-obj.x)*(this.x-obj.x) + (this.y-obj.y)*(this.y-obj.y));
+}
