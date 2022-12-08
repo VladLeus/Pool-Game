@@ -24,7 +24,3 @@ Score.prototype.drawLines = function (color) {
 
     }
 };
-
-Score.prototype.increment = function(){
-    this.value++;
-};

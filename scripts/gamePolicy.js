@@ -2,13 +2,11 @@ function GamePolicy(){
 
     this.turn = 0;
     this.firstCollision = true;
-    let player1TotalScore = new Score(new Vector(Game.size.x/2 - 75,Game.size.y/2 - 45));
-    let player2TotalScore = new Score(new Vector(Game.size.x/2 + 75,Game.size.y/2 - 45));
 
-    let player1MatchScore = new Score(new Vector(Game.size.x/2 - 280,108));
-    let player2MatchScore = new Score(new Vector(Game.size.x/2 + 230,108));
+    let player1MatchScore = new Score(new Vector(150,150));
+    let player2MatchScore = new Score(new Vector(1150,150));
 
-    this.players = [new Player(player1MatchScore,player1TotalScore), new Player(player2MatchScore,player2TotalScore)];
+    this.players = [new Player(player1MatchScore), new Player(player2MatchScore)];
     this.foul = false;
     this.scored = false;
     this.allBallsinHoles = false;
@@ -32,10 +30,8 @@ function GamePolicy(){
 GamePolicy.prototype.reset = function(){
     this.turn = 0;
     this.players[0].matchScore.value = 0;
-    this.players[0].playerColor = undefined;
     this.players[0].playerHealth = 3;
     this.players[1].matchScore.value = 0;
-    this.players[1].playerColor = undefined;
     this.players[1].playerHealth = 3;
     this.foul = false;
     this.scored = false;
@@ -47,75 +43,39 @@ GamePolicy.prototype.reset = function(){
 
 GamePolicy.prototype.drawScores = function(){
     canvas.drawText("PLAYER " + (this.turn+1), new Vector(Game.size.x/2 + 40,200), new Vector(150,0), "#096834", "top", "Impact", "70px");
-    this.players[0].totalScore.draw();
-    this.players[1].totalScore.draw();
 
     this.players[0].matchScore.drawLines(this.players[0].color);
     this.players[1].matchScore.drawLines(this.players[1].color);
 }
 
 GamePolicy.prototype.isInsideTopLeftHole = function(pos){
-    if (this.topLeftHolePos.distanceFrom(pos) < hole_radius) {
-        return true
-    }
-    else {
-        return false
-    }
+    return this.topLeftHolePos.distanceFrom(pos) < hole_radius;
 }
 
 GamePolicy.prototype.isInsideTopRightHole = function(pos){
-    if (this.topRightHolePos.distanceFrom(pos) < hole_radius) {
-        return true
-    }
-    else {
-        return false
-    }
+    return this.topRightHolePos.distanceFrom(pos) < hole_radius;
 }
 
 GamePolicy.prototype.isInsideBottomLeftHole = function(pos){
-    if (this.bottomLeftHolePos.distanceFrom(pos) < hole_radius) {
-        return true
-    }
-    else {
-        return false
-    }
+    return this.bottomLeftHolePos.distanceFrom(pos) < hole_radius;
 }
 
 GamePolicy.prototype.isInsideBottomRightHole = function(pos){
-    if (this.bottomRightHolePos.distanceFrom(pos) < hole_radius) {
-        return true
-    }
-    else {
-        return false
-    }
+    return this.bottomRightHolePos.distanceFrom(pos) < hole_radius;
 }
 
 GamePolicy.prototype.isInsideTopCenterHole = function(pos){
-    if (this.topCenterHolePos.distanceFrom(pos) < hole_radius) {
-        return true
-    }
-    else {
-        return false
-    }
+    return this.topCenterHolePos.distanceFrom(pos) < hole_radius;
 }
 
 GamePolicy.prototype.isInsideBottomCenterHole = function(pos){
-    if (this.bottomCenterHolePos.distanceFrom(pos) < hole_radius) {
-        return true
-    }
-    else {
-        return false
-    }
+    return this.bottomCenterHolePos.distanceFrom(pos) < hole_radius;
 }
 
 GamePolicy.prototype.isInsideHole = function(pos){
-    if (this.isInsideTopLeftHole(pos) || this.isInsideTopRightHole(pos) ||
+    return this.isInsideTopLeftHole(pos) || this.isInsideTopRightHole(pos) ||
         this.isInsideBottomLeftHole(pos) || this.isInsideBottomRightHole(pos) ||
-        this.isInsideTopCenterHole(pos) || this.isInsideBottomCenterHole(pos)) {
-        return true
-    } else {
-        return false
-    }
+        this.isInsideTopCenterHole(pos) || this.isInsideBottomCenterHole(pos);
 }
 
 GamePolicy.prototype.initiateState = function(policyState){
@@ -128,15 +88,10 @@ GamePolicy.prototype.initiateState = function(policyState){
     this.turnPlayed = policyState.turnPlayed;
     this.validBallsInsertedOnTurn = policyState.validBallsInsertedOnTurn;
 
-    this.players[0].totalScore.value = policyState.players[0].totalScore.value;
-    this.players[1].totalScore.value = policyState.players[1].totalScore.value;
-
     this.players[0].matchScore.value = policyState.players[0].matchScore.value;
-    this.players[0].playerColor = policyState.players[0].color;
     this.players[0].playerHealth = policyState.players[0].playerHealth;
     this.players[1].matchScore.value = policyState.players[1].matchScore.value;
     this.players[1].playerHealth = policyState.players[1].playerHealth;
-    this.players[1].playerColor = policyState.players[1].color;
 }
 
 GamePolicy.prototype.handleBallInHole = function(ball){
@@ -144,34 +99,29 @@ GamePolicy.prototype.handleBallInHole = function(ball){
     let currentPlayer = this.players[this.turn];
     let secondPlayer = this.players[(this.turn + 1) % 2];
 
-    if (this.allBallsinHoles === false) {
-        if (this.isInsideHole()) {
 
-            if (currentPlayer.playerColor === undefined) {
-                if (ball.color === colors.red) {
-                    currentPlayer.playerColor = colors.red;
-                    secondPlayer.color = colors.yellow;
-                } else if (ball.color === colors.yellow) {
-                    currentPlayer.playerColor = colors.yellow;
-                    secondPlayer.color = colors.red;
-                } else if (ball.color === colors.black) {
-                    currentPlayer.playerColor = colors.black;
-                } else if (ball.color === colors.white) {
-                    this.foul = true;
-                    currentPlayer.playerHealth--;
-                    return;
-                }
-            }
+    if (this.isInsideHole(ball.position)) {
 
-            if (currentPlayer.playerColor === ball.color) {
-                currentPlayer.matchScore.increment();
-                this.scored = true;
-                this.validBallsInsertedOnTurn++;
-            }
+        switch (ball.color) {
+            case colors.red:
+                currentPlayer.matchScore++
+                this.scored = true
+                break;
+            case colors.yellow:
+                currentPlayer.matchScore++
+                this.scored = true
+                break;
+            case colors.black:
+                currentPlayer.matchScore++
+                this.scored = true
+                break
+            case colors.white:
+                this.foul = true;
+                currentPlayer.playerHealth--
+                break;
+            default:
+                break;
         }
-    } else if (currentPlayer.matchScore === 15 || secondPlayer.matchScore === 15 || currentPlayer.matchScore + secondPlayer.matchScore === 15) {
-        this.won = true;
+        return true;
     }
-
-
 }
