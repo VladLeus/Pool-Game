@@ -36,11 +36,9 @@ function GameWorld(){
 
 GameWorld.prototype.handleTheCollisions = function () {
     for (let i = 0; i < this.spawnBalls.length; i++){
-        let j = i;
         this.spawnBalls[i].collideWith(this.gameTable)
         if (this.policy.handleBallInHole(this.spawnBalls[i])) {
-            this.spawnBalls.slice(j,1)
-            console.log('done')
+            setTimeout(this.spawnBalls.splice(i,1), 1000);
         }
         for (let j = i + 1; j < this.spawnBalls.length; j++){
             let firstBall = this.spawnBalls[i]

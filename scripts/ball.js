@@ -8,6 +8,7 @@ function Ball(position, color){
     this.velocity = new Vector()
     this.moving = false
     this.sprite = getBallsSpritesByCol(color)
+    this.ballColor = color
     this.inHole = false
 }
 
