@@ -1,11 +1,7 @@
 function GamePolicy(){
 
-
-    let player1MatchScore = new Score(new Vector(150,150));
-    let player2MatchScore = new Score(new Vector(1150,150));
-
-    this.players = [new Player(player1MatchScore, 1), new Player(player2MatchScore, 2)];
-    this.scored = false;
+    this.players = [new Player(0, 1), new Player(0, 2)];
+    this.scored = true;
     this.allBallsinHoles = false;
 
     this.leftBorderX = 70;
@@ -40,13 +36,6 @@ GamePolicy.prototype.reset = function() {
     this.scored = false;
 }
 
-GamePolicy.prototype.drawScores = function(){
-    canvas.drawText("PLAYER " + (this.currentPlayer.playerNum.toString()), new Vector(800,300), new Vector(150,0), "#096834", "top", "Impact", "70px");
-
-    this.players[0].matchScore.drawLines(this.players[0].playerNum);
-    this.players[1].matchScore.drawLines(this.players[1].playerNum);
-}
-
 GamePolicy.prototype.isInsideTopLeftHole = function(pos){
     return this.topLeftHolePos.distanceFrom(pos) < hole_radius;
 }
@@ -77,30 +66,40 @@ GamePolicy.prototype.isInsideHole = function(pos){
         this.isInsideTopCenterHole(pos) || this.isInsideBottomCenterHole(pos);
 }
 
-GamePolicy.prototype.handleBallInHole = function(ball){
+GamePolicy.prototype.handleBallInHole = function (ball) {
+
 
 
     if (this.isInsideHole(ball.position)) {
         switch (ball.ballColor) {
             case 1:
                 this.currentPlayer.matchScore++
-                this.scored = true
+                console.log(this.currentPlayer.matchScore)
                 break;
             case 2:
                 this.currentPlayer.matchScore++
-                this.scored = true
+                console.log(this.currentPlayer.matchScore)
                 break;
             case 3:
                 this.currentPlayer.matchScore++
-                this.scored = true
+                console.log(this.currentPlayer.matchScore)
                 break
             case 4:
-                this.currentPlayer.playerHealth--
-                console.log(this.currentPlayer.playerHealth)
-                /*this.getWinner(this.currentPlayer, this.secondPlayer)*/
-                return false;
+                this.scored = false;
+                break
             default:
                 break;
+        }
+        if (!this.scored){
+            if(!mouse.left.down){
+                ball.position = mouse.position;
+                ball.velocity = new Vector()
+            }
+            this.currentPlayer.playerHealth--;
+            this.getWinner()
+            console.log(this.currentPlayer.playerHealth)
+            this.scored = true;
+            return false;
         }
         return true;
     }
@@ -108,18 +107,18 @@ GamePolicy.prototype.handleBallInHole = function(ball){
 
 GamePolicy.prototype.getWinner = function (currentPlayer, secondPLayer) {
     if (this.currentPlayer.playerHealth === 0){
-        alert(`Player ${this.currentPlayer.playerNum} lost all his hearts`)
+        alert(`Player ${this.currentPlayer.playerNum} lost all his hearts, press F5 to restart the game`)
         this.reset()
     } else if (this.secondPlayer.playerHealth === 0) {
-        alert(`Player ${this.secondPlayer.playerNum} lost all his hearts`)
+        alert(`Player ${this.secondPlayer.playerNum} lost all his hearts, press F5 to restart the game`)
         this.reset()
     }
     if (this.currentPlayer.matchScore === 15 || this.secondPlayer.matchScore === 15 || this.currentPlayer.matchScore + this.secondPlayer.matchScore === 15){
         if (this.currentPlayer.matchScore > this.secondPlayer.matchScore){
-            alert(`Player ${this.currentPlayer.playerNum} won the game!`)
+            alert(`Player ${this.currentPlayer.playerNum} won the game! Press F5 to restart the game`)
             this.reset()
         } else {
-            alert(`Player ${this.secondPlayer.playerNum} won the game`)
+            alert(`Player ${this.secondPlayer.playerNum} won the game! Press F5 to restart the game`)
             this.reset()
         }
     }
