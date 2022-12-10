@@ -10,6 +10,7 @@ function Stick(position, onShoot){
     this.power = 0
     this.onShoot = onShoot
     this.shot = false
+    this.gamePolicy = new GamePolicy()
 
 }
 
@@ -19,6 +20,10 @@ Stick.prototype.update = function (){
     }
     else if (this.power > 0){
         this.shoot()
+        if (this.shot){
+            this.gamePolicy.currentPlayer.attempt--
+            console.log(this.gamePolicy.currentPlayer.attempt)
+        }
     }
 
     this.rotationUpdate()

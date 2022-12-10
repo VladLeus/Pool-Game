@@ -2,8 +2,6 @@ function GamePolicy(){
 
     this.players = [new Player(0, 1), new Player(0, 2)];
     this.scored = true;
-    this.allBallsinHoles = false;
-
     this.leftBorderX = 70;
     this.rightBorderX = 1400;
     this.topBorderY = 50;
@@ -95,7 +93,6 @@ GamePolicy.prototype.handleBallInHole = function (ball) {
             }
             this.currentPlayer.playerHealth--;
             this.getWinner()
-            console.log(this.currentPlayer.playerHealth)
             this.scored = true;
             return false;
         }
