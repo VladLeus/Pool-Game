@@ -68,30 +68,21 @@ GamePolicy.prototype.isInsideHole = function(pos){
 
 GamePolicy.prototype.handleBallInHole = function (ball) {
 
-
-
     if (this.isInsideHole(ball.position)) {
         switch (ball.ballColor) {
             case 1:
                 this.currentPlayer.matchScore++
-                this.currentPlayer.attempt--
                 this.getWinner()
-                console.log(this.currentPlayer.matchScore)
                 break;
             case 2:
                 this.currentPlayer.matchScore++
-                this.currentPlayer.attempt--
                 this.getWinner()
-                console.log(this.currentPlayer.matchScore)
                 break;
             case 3:
                 this.currentPlayer.matchScore++
-                this.currentPlayer.attempt--
                 this.getWinner()
-                console.log(this.currentPlayer.matchScore)
                 break
             case 4:
-                this.currentPlayer.attempt--
                 this.scored = false;
                 break
             default:
@@ -112,42 +103,49 @@ GamePolicy.prototype.handleBallInHole = function (ball) {
     }
 }
 
-GamePolicy.prototype.getWinner = function (currentPlayer, secondPLayer) {
+GamePolicy.prototype.getWinner = function () {
     if (this.currentPlayer.playerHealth === 0){
         swal({
             title: "Game ended",
-            text: `Player ${this.currentPlayer.playerNum} lost all his hearts, press F5 to restart the game`,
+            text: `Player ${this.currentPlayer.playerNum} lost all his hearts. Press Esc to restart`,
             icon: "error",
             button: null
         });
+        setTimeout(() =>{
+            poolGame.start()
+        }, 2000)
     } else if (this.secondPlayer.playerHealth === 0) {
         swal({
             title: "Game ended",
-            text: `Player ${this.secondPlayer.playerNum} lost all his hearts, press F5 to restart the game`,
+            text: `Player ${this.secondPlayer.playerNum} lost all his hearts. Press Esc to restart`,
             icon: "error",
             button: null
         });
+        setTimeout(() =>{
+            poolGame.start()
+        }, 2000)
     }
-
-    if (this.currentPlayer.attempt === 0){
-
-    }
-
     if (this.currentPlayer.matchScore === 6 || this.secondPlayer.matchScore === 6 || this.currentPlayer.matchScore + this.secondPlayer.matchScore === 6){
         if (this.currentPlayer.matchScore > this.secondPlayer.matchScore){
             swal({
                 title: "Game ended",
-                text: `Player ${this.currentPlayer.playerNum} won the game! Press F5 to restart the game`,
+                text: `Player ${this.currentPlayer.playerNum} won the game! Press Esc to restart`,
                 icon: "success",
                 button: null
             });
+            setTimeout(() =>{
+                poolGame.start()
+            }, 2000)
         } else {
             swal({
                 title: "Game ended",
-                text: `Player ${this.secondPlayer.playerNum} won the game! Press F5 to restart the game`,
+                text: `Player ${this.secondPlayer.playerNum} won the game! Press Esc to restart`,
                 icon: "success",
                 button: null
             });
+            setTimeout(() =>{
+                poolGame.start()
+            }, 2000)
         }
     }
 }
