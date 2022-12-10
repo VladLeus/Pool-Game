@@ -128,6 +128,11 @@ GamePolicy.prototype.getWinner = function (currentPlayer, secondPLayer) {
             button: null
         });
     }
+
+    if (this.currentPlayer.attempt === 0){
+
+    }
+
     if (this.currentPlayer.matchScore === 6 || this.secondPlayer.matchScore === 6 || this.currentPlayer.matchScore + this.secondPlayer.matchScore === 6){
         if (this.currentPlayer.matchScore > this.secondPlayer.matchScore){
             swal({
