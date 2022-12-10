@@ -10,7 +10,7 @@ function GamePolicy(){
     this.bottomBorderY = 760;
 
     this.topCenterHolePos = new Vector(750,32);
-    this.bottomCenterHolePos = new Vector(750,794);
+    this.bottomCenterHolePos = new Vector(750,785);
     this.topLeftHolePos = new Vector(62,62);
     this.topRightHolePos = new Vector(1435,62);
     this.bottomLeftHolePos = new Vector(62,762)
@@ -20,7 +20,7 @@ function GamePolicy(){
     this.secondPlayer = this.players[1];
 }
 
-GamePolicy.prototype.reset = function() {
+/*GamePolicy.prototype.reset = function() {
     this.players[0].matchScore.value = 0;
     this.players[0].playerHealth = 3;
     this.players[0].attempt--;
@@ -34,7 +34,7 @@ GamePolicy.prototype.reset = function() {
         this.players[1].attempt = 5
     }
     this.scored = false;
-}
+}*/
 
 GamePolicy.prototype.isInsideTopLeftHole = function(pos){
     return this.topLeftHolePos.distanceFrom(pos) < hole_radius;
@@ -74,17 +74,24 @@ GamePolicy.prototype.handleBallInHole = function (ball) {
         switch (ball.ballColor) {
             case 1:
                 this.currentPlayer.matchScore++
+                this.currentPlayer.attempt--
+                this.getWinner()
                 console.log(this.currentPlayer.matchScore)
                 break;
             case 2:
                 this.currentPlayer.matchScore++
+                this.currentPlayer.attempt--
+                this.getWinner()
                 console.log(this.currentPlayer.matchScore)
                 break;
             case 3:
                 this.currentPlayer.matchScore++
+                this.currentPlayer.attempt--
+                this.getWinner()
                 console.log(this.currentPlayer.matchScore)
                 break
             case 4:
+                this.currentPlayer.attempt--
                 this.scored = false;
                 break
             default:
@@ -92,7 +99,7 @@ GamePolicy.prototype.handleBallInHole = function (ball) {
         }
         if (!this.scored){
             if(!mouse.left.down){
-                ball.position = mouse.position;
+                ball.position = mouse.position
                 ball.velocity = new Vector()
             }
             this.currentPlayer.playerHealth--;
@@ -107,19 +114,35 @@ GamePolicy.prototype.handleBallInHole = function (ball) {
 
 GamePolicy.prototype.getWinner = function (currentPlayer, secondPLayer) {
     if (this.currentPlayer.playerHealth === 0){
-        alert(`Player ${this.currentPlayer.playerNum} lost all his hearts, press F5 to restart the game`)
-        this.reset()
+        swal({
+            title: "Game ended",
+            text: `Player ${this.currentPlayer.playerNum} lost all his hearts, press F5 to restart the game`,
+            icon: "error",
+            button: null
+        });
     } else if (this.secondPlayer.playerHealth === 0) {
-        alert(`Player ${this.secondPlayer.playerNum} lost all his hearts, press F5 to restart the game`)
-        this.reset()
+        swal({
+            title: "Game ended",
+            text: `Player ${this.secondPlayer.playerNum} lost all his hearts, press F5 to restart the game`,
+            icon: "error",
+            button: null
+        });
     }
-    if (this.currentPlayer.matchScore === 15 || this.secondPlayer.matchScore === 15 || this.currentPlayer.matchScore + this.secondPlayer.matchScore === 15){
+    if (this.currentPlayer.matchScore === 6 || this.secondPlayer.matchScore === 6 || this.currentPlayer.matchScore + this.secondPlayer.matchScore === 6){
         if (this.currentPlayer.matchScore > this.secondPlayer.matchScore){
-            alert(`Player ${this.currentPlayer.playerNum} won the game! Press F5 to restart the game`)
-            this.reset()
+            swal({
+                title: "Game ended",
+                text: `Player ${this.currentPlayer.playerNum} won the game! Press F5 to restart the game`,
+                icon: "success",
+                button: null
+            });
         } else {
-            alert(`Player ${this.secondPlayer.playerNum} won the game! Press F5 to restart the game`)
-            this.reset()
+            swal({
+                title: "Game ended",
+                text: `Player ${this.secondPlayer.playerNum} won the game! Press F5 to restart the game`,
+                icon: "success",
+                button: null
+            });
         }
     }
 }

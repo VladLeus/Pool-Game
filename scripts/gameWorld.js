@@ -9,15 +9,6 @@ function GameWorld(){
         [new Vector(1090,374), colors.black],//4
         [new Vector(1090,413), colors.red],//5
         [new Vector(1090,452), colors.black],//6
-        [new Vector(1126,354), colors.yellow],//7
-        [new Vector(1126,393), colors.yellow],//8
-        [new Vector(1126,433), colors.red],//9
-        [new Vector(1126,472), colors.red],//10
-        [new Vector(1162,335), colors.black],//11
-        [new Vector(1162,374), colors.yellow],//12
-        [new Vector(1162,413), colors.black],//13
-        [new Vector(1162,452), colors.yellow],//14
-        [new Vector(1162,491), colors.red],//15
         [new Vector(413,413), colors.white]
     ].map(params => new Ball(params[0], params[1]))
 
