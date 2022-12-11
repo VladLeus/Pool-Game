@@ -26,6 +26,7 @@ function GameWorld(){
 
 
 GameWorld.prototype.handleTheCollisions = function () {
+
     for (let i = 0; i < this.spawnBalls.length; i++){
         this.spawnBalls[i].collideWith(this.gameTable)
         if (this.policy.handleBallInHole(this.spawnBalls[i])) {
@@ -51,6 +52,7 @@ GameWorld.prototype.update = function ()  {
     }
 
     if (!this.isBallsMoves() && this.stick.shot){
+        this.checkForSwitch()
         this.stick.changeTheStickPosition(this.whiteBall.position)
     }
 }
@@ -63,6 +65,11 @@ GameWorld.prototype.draw =  function ()  {
         this.spawnBalls[i].draw()
     }
     this.stick.draw()
+
+    canvas.canvasContext.fillStyle = "#FFF"
+    canvas.canvasContext.font = "14px serif"
+    let message = `Player №${currentPlayer.playerNum}, Your Score: ${currentPlayer.matchScore}, Your Health: ${currentPlayer.playerHealth}, Your attempts: ${currentPlayer.attempt}, Round: ${ROUNDS} `
+    canvas.canvasContext.fillText(message, 200, 20);
 }
 
 GameWorld.prototype.isBallsMoves = function (){
@@ -74,4 +81,18 @@ GameWorld.prototype.isBallsMoves = function (){
         }
     }
     return ballsMoving
+}
+
+GameWorld.prototype.checkForSwitch = function (){
+    if (currentPlayer.attempt === 0 && secondPlayer.attempt !== 0){
+        this.policy.switchTurns()
+    }
+    if (currentPlayer.matchScore === currPlayerScoreTemp) {
+        this.policy.switchTurns()
+        currPlayerScoreTemp = currentPlayer.matchScore;
+    } else if (currentPlayer.matchScore > currPlayerScoreTemp) {
+        currPlayerScoreTemp = currentPlayer.matchScore
+    } else if (currentPlayer.attempt === 0 && secondPlayer.attempt !== 0){
+        this.policy.switchTurns()
+    }
 }

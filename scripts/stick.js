@@ -21,7 +21,6 @@ Stick.prototype.update = function (){
     else if (this.power > 0){
         this.shoot()
         currentPlayer.attempt--
-        console.log(currentPlayer.attempt)
         this.getWinnerByAttempts()
     }
 
@@ -61,7 +60,7 @@ Stick.prototype.changeTheStickPosition = function (position) {
 }
 
 Stick.prototype.getWinnerByAttempts = function () {
-    if (currentPlayer.attempt === 0 || secondPlayer.attempt === 0){
+    if (currentPlayer.attempt === 0 && secondPlayer.attempt === 0){
         if (currentPlayer.matchScore > secondPlayer.matchScore){
             swal({
                 title: "Game ended",

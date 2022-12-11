@@ -27,7 +27,7 @@ Ball.prototype.draw = function (){
 }
 
 Ball.prototype.shoot = function (power, rotation) {
-    this.velocity = new Vector((power / 1.5) * Math.cos(rotation), (power / 1.5) * Math.sin(rotation))
+    this.velocity = new Vector((power / 1.1) * Math.cos(rotation), (power / 1.1) * Math.sin(rotation))
     this.moving = true
 }
 

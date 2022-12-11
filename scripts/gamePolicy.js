@@ -19,9 +19,9 @@ GamePolicy.prototype.reset = function() {
     currentPlayer.playerNum = 1;
     currentPlayer.playerHealth = 3;
     currentPlayer.matchScore = 0;
-    currentPlayer.attempt = 5 - ROUNDS;
+    currentPlayer.attempt = 5 - (ROUNDS - 1);
     if (currentPlayer.attempt < 3 ){
-        ROUNDS = 0;
+        ROUNDS = 1;
         currentPlayer.attempt = 5;
     }
 
@@ -33,6 +33,12 @@ GamePolicy.prototype.reset = function() {
         ROUNDS = 0;
         secondPlayer.attempt = 5;
     }
+}
+
+GamePolicy.prototype.switchTurns = function () {
+    let temp = currentPlayer;
+    currentPlayer = secondPlayer;
+    secondPlayer = temp;
 }
 
 GamePolicy.prototype.isInsideTopLeftHole = function(pos){
@@ -87,11 +93,9 @@ GamePolicy.prototype.handleBallInHole = function (ball) {
             default:
                 break;
         }
-        if (!this.scored){
-            if(!mouse.left.down){
-                ball.position = new Vector(413,413)
-                ball.velocity = new Vector()
-            }
+        if (!this.scored) {
+            ball.position = new Vector(413, 413)
+            ball.velocity = new Vector()
             currentPlayer.playerHealth--;
             this.getWinner()
             this.scored = true;
