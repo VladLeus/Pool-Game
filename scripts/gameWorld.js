@@ -44,6 +44,7 @@ GameWorld.prototype.update = function ()  {
 
     this.handleTheCollisions()
 
+
     this.stick.update()
 
 
@@ -53,6 +54,7 @@ GameWorld.prototype.update = function ()  {
 
     if (!this.isBallsMoves() && this.stick.shot){
         this.checkForSwitch()
+        this.policy.getWinner()
         this.stick.changeTheStickPosition(this.whiteBall.position)
     }
 }
@@ -86,8 +88,7 @@ GameWorld.prototype.isBallsMoves = function (){
 GameWorld.prototype.checkForSwitch = function (){
     if (currentPlayer.attempt === 0 && secondPlayer.attempt !== 0){
         this.policy.switchTurns()
-    }
-    if (currentPlayer.matchScore === currPlayerScoreTemp) {
+    } else if (currentPlayer.matchScore === currPlayerScoreTemp) {
         this.policy.switchTurns()
         currPlayerScoreTemp = currentPlayer.matchScore;
     } else if (currentPlayer.matchScore > currPlayerScoreTemp) {
@@ -95,4 +96,5 @@ GameWorld.prototype.checkForSwitch = function (){
     } else if (currentPlayer.attempt === 0 && secondPlayer.attempt !== 0){
         this.policy.switchTurns()
     }
+
 }

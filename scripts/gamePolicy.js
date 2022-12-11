@@ -77,15 +77,12 @@ GamePolicy.prototype.handleBallInHole = function (ball) {
         switch (ball.ballColor) {
             case 1:
                 currentPlayer.matchScore++
-                this.getWinner()
                 break;
             case 2:
                 currentPlayer.matchScore++
-                this.getWinner()
                 break;
             case 3:
                 currentPlayer.matchScore++
-                this.getWinner()
                 break
             case 4:
                 this.scored = false;
@@ -97,7 +94,6 @@ GamePolicy.prototype.handleBallInHole = function (ball) {
             ball.position = new Vector(413, 413)
             ball.velocity = new Vector()
             currentPlayer.playerHealth--;
-            this.getWinner()
             this.scored = true;
             return false;
         }
@@ -131,6 +127,47 @@ GamePolicy.prototype.getWinner = function () {
             poolGame.start()
         }, 2000)
     }
+
+    if (currentPlayer.attempt === 0 && secondPlayer.attempt === 0){
+        if (currentPlayer.matchScore > secondPlayer.matchScore){
+            swal({
+                title: "Game ended",
+                text: `Player ${currentPlayer.playerNum} won the game! Press Esc to restart`,
+                icon: "success",
+                button: null
+            });
+            setTimeout(() =>{
+                ROUNDS++
+                this.reset()
+                poolGame.start()
+            }, 2000)
+        } else if (currentPlayer.matchScore < secondPlayer.matchScore) {
+            swal({
+                title: "Game ended",
+                text: `Player ${secondPlayer.playerNum} won the game! Press Esc to restart`,
+                icon: "success",
+                button: null
+            });
+            setTimeout(() =>{
+                ROUNDS++
+                this.reset()
+                poolGame.start()
+            }, 2000)
+        } else {
+            swal({
+                title: "Game ended",
+                text: `DRAW! Press Esc to restart`,
+                icon: "success",
+                button: null
+            });
+            setTimeout(() =>{
+                ROUNDS++
+                this.reset()
+                poolGame.start()
+            }, 2000)
+        }
+    }
+
     if (currentPlayer.matchScore === 6 || secondPlayer.matchScore === 6 || currentPlayer.matchScore + secondPlayer.matchScore === 6){
         if (currentPlayer.matchScore > secondPlayer.matchScore){
             swal({
