@@ -1,6 +1,5 @@
 function GamePolicy(){
 
-    this.players = [new Player(0, 1), new Player(0, 2)];
     this.scored = true;
     this.leftBorderX = 70;
     this.rightBorderX = 1400;
@@ -14,25 +13,27 @@ function GamePolicy(){
     this.bottomLeftHolePos = new Vector(62,762)
     this.bottomRightHolePos = new Vector(1435,762);
 
-    this.currentPlayer = this.players[0];
-    this.secondPlayer = this.players[1];
 }
 
-/*GamePolicy.prototype.reset = function() {
-    this.players[0].matchScore.value = 0;
-    this.players[0].playerHealth = 3;
-    this.players[0].attempt--;
-    if (this.players[0].attempt < 3){
-        this.players[0].attempt = 5
+GamePolicy.prototype.reset = function() {
+    currentPlayer.playerNum = 1;
+    currentPlayer.playerHealth = 3;
+    currentPlayer.matchScore = 0;
+    currentPlayer.attempt = 5 - ROUNDS;
+    if (currentPlayer.attempt < 3 ){
+        ROUNDS = 0;
+        currentPlayer.attempt = 5;
     }
-    this.players[1].matchScore.value = 0;
-    this.players[1].playerHealth = 3;
-    this.players[1].attempt--;
-    if (this.players[1].attempt < 3){
-        this.players[1].attempt = 5
+
+    secondPlayer.playerNum = 2;
+    secondPlayer.playerHealth = 3;
+    secondPlayer.matchScore = 0;
+    secondPlayer.attempt = 5 - ROUNDS;
+    if (secondPlayer.attempt < 3 ){
+        ROUNDS = 0;
+        secondPlayer.attempt = 5;
     }
-    this.scored = false;
-}*/
+}
 
 GamePolicy.prototype.isInsideTopLeftHole = function(pos){
     return this.topLeftHolePos.distanceFrom(pos) < hole_radius;
@@ -69,15 +70,15 @@ GamePolicy.prototype.handleBallInHole = function (ball) {
     if (this.isInsideHole(ball.position)) {
         switch (ball.ballColor) {
             case 1:
-                this.currentPlayer.matchScore++
+                currentPlayer.matchScore++
                 this.getWinner()
                 break;
             case 2:
-                this.currentPlayer.matchScore++
+                currentPlayer.matchScore++
                 this.getWinner()
                 break;
             case 3:
-                this.currentPlayer.matchScore++
+                currentPlayer.matchScore++
                 this.getWinner()
                 break
             case 4:
@@ -88,10 +89,10 @@ GamePolicy.prototype.handleBallInHole = function (ball) {
         }
         if (!this.scored){
             if(!mouse.left.down){
-                ball.position = mouse.position
+                ball.position = new Vector(413,413)
                 ball.velocity = new Vector()
             }
-            this.currentPlayer.playerHealth--;
+            currentPlayer.playerHealth--;
             this.getWinner()
             this.scored = true;
             return false;
@@ -101,46 +102,54 @@ GamePolicy.prototype.handleBallInHole = function (ball) {
 }
 
 GamePolicy.prototype.getWinner = function () {
-    if (this.currentPlayer.playerHealth === 0){
+    if (currentPlayer.playerHealth === 0){
         swal({
             title: "Game ended",
-            text: `Player ${this.currentPlayer.playerNum} lost all his hearts. Press Esc to restart`,
+            text: `Player ${currentPlayer.playerNum} lost all his hearts. Press Esc to restart`,
             icon: "error",
             button: null
         });
         setTimeout(() =>{
+            ROUNDS++
+            this.reset()
             poolGame.start()
         }, 2000)
-    } else if (this.secondPlayer.playerHealth === 0) {
+    } else if (secondPlayer.playerHealth === 0) {
         swal({
             title: "Game ended",
-            text: `Player ${this.secondPlayer.playerNum} lost all his hearts. Press Esc to restart`,
+            text: `Player ${secondPlayer.playerNum} lost all his hearts. Press Esc to restart`,
             icon: "error",
             button: null
         });
         setTimeout(() =>{
+            ROUNDS++
+            this.reset()
             poolGame.start()
         }, 2000)
     }
-    if (this.currentPlayer.matchScore === 6 || this.secondPlayer.matchScore === 6 || this.currentPlayer.matchScore + this.secondPlayer.matchScore === 6){
-        if (this.currentPlayer.matchScore > this.secondPlayer.matchScore){
+    if (currentPlayer.matchScore === 6 || secondPlayer.matchScore === 6 || currentPlayer.matchScore + secondPlayer.matchScore === 6){
+        if (currentPlayer.matchScore > secondPlayer.matchScore){
             swal({
                 title: "Game ended",
-                text: `Player ${this.currentPlayer.playerNum} won the game! Press Esc to restart`,
+                text: `Player ${currentPlayer.playerNum} won the game! Press Esc to restart`,
                 icon: "success",
                 button: null
             });
             setTimeout(() =>{
+                ROUNDS++
+                this.reset()
                 poolGame.start()
             }, 2000)
         } else {
             swal({
                 title: "Game ended",
-                text: `Player ${this.secondPlayer.playerNum} won the game! Press Esc to restart`,
+                text: `Player ${secondPlayer.playerNum} won the game! Press Esc to restart`,
                 icon: "success",
                 button: null
             });
             setTimeout(() =>{
+                ROUNDS++
+                this.reset()
                 poolGame.start()
             }, 2000)
         }

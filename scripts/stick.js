@@ -20,10 +20,9 @@ Stick.prototype.update = function (){
     }
     else if (this.power > 0){
         this.shoot()
-        if (this.shot){
-            this.gamePolicy.currentPlayer.attempt--
-            console.log(this.gamePolicy.currentPlayer.attempt)
-        }
+        currentPlayer.attempt--
+        console.log(currentPlayer.attempt)
+        this.getWinnerByAttempts()
     }
 
     this.rotationUpdate()
@@ -59,4 +58,46 @@ Stick.prototype.changeTheStickPosition = function (position) {
     this.position = position.copy()
     this.origin = stick_origin.copy()
     this.shot = false
+}
+
+Stick.prototype.getWinnerByAttempts = function () {
+    if (currentPlayer.attempt === 0 || secondPlayer.attempt === 0){
+        if (currentPlayer.matchScore > secondPlayer.matchScore){
+            swal({
+                title: "Game ended",
+                text: `Player ${currentPlayer.playerNum} won the game! Press Esc to restart`,
+                icon: "success",
+                button: null
+            });
+            setTimeout(() =>{
+                ROUNDS++
+                this.gamePolicy.reset()
+                poolGame.start()
+            }, 2000)
+        } else if (currentPlayer.matchScore < secondPlayer.matchScore) {
+            swal({
+                title: "Game ended",
+                text: `Player ${secondPlayer.playerNum} won the game! Press Esc to restart`,
+                icon: "success",
+                button: null
+            });
+            setTimeout(() =>{
+                ROUNDS++
+                this.gamePolicy.reset()
+                poolGame.start()
+            }, 2000)
+        } else {
+            swal({
+                title: "Game ended",
+                text: `DRAW! Press Esc to restart`,
+                icon: "success",
+                button: null
+            });
+            setTimeout(() =>{
+                ROUNDS++
+                this.gamePolicy.reset()
+                poolGame.start()
+            }, 2000)
+        }
+    }
 }

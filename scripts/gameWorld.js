@@ -45,6 +45,7 @@ GameWorld.prototype.update = function ()  {
 
     this.stick.update()
 
+
     for (let i = 0; i < this.spawnBalls.length; i++){
         this.spawnBalls[i].update(delta)
     }
