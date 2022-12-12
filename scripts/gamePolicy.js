@@ -104,8 +104,8 @@ GamePolicy.prototype.handleBallInHole = function (ball) {
 GamePolicy.prototype.getWinner = function () {
     if (currentPlayer.playerHealth === 0){
         swal({
-            title: "Game ended",
-            text: `Player ${currentPlayer.playerNum} lost all his hearts. Press Esc to continue`,
+            title: "Round ended",
+            text: `Player ${currentPlayer.playerNum} lost all his hearts. Press Esc to continue or F5 to restart.`,
             icon: "error",
             button: null
         });
@@ -116,8 +116,8 @@ GamePolicy.prototype.getWinner = function () {
         }, 2000)
     } else if (secondPlayer.playerHealth === 0) {
         swal({
-            title: "Game ended",
-            text: `Player ${secondPlayer.playerNum} lost all his hearts. Press Esc to continue`,
+            title: "Round ended",
+            text: `Player ${secondPlayer.playerNum} lost all his hearts. Press Esc to continue or F5 to restart.`,
             icon: "error",
             button: null
         });
@@ -131,8 +131,8 @@ GamePolicy.prototype.getWinner = function () {
     if (currentPlayer.attempt === 0 && secondPlayer.attempt === 0){
         if (currentPlayer.matchScore > secondPlayer.matchScore){
             swal({
-                title: "Game ended",
-                text: `Player ${currentPlayer.playerNum} won the game! Press Esc to continue`,
+                title: "Round ended",
+                text: `Player ${currentPlayer.playerNum} won the game! Press Esc to continue or F5 to restart.`,
                 icon: "success",
                 button: null
             });
@@ -143,8 +143,8 @@ GamePolicy.prototype.getWinner = function () {
             }, 2000)
         } else if (currentPlayer.matchScore < secondPlayer.matchScore) {
             swal({
-                title: "Game ended",
-                text: `Player ${secondPlayer.playerNum} won the game! Press Esc to continue`,
+                title: "Round ended",
+                text: `Player ${secondPlayer.playerNum} won the game! Press Esc to continue or F5 to restart.`,
                 icon: "success",
                 button: null
             });
@@ -155,8 +155,8 @@ GamePolicy.prototype.getWinner = function () {
             }, 2000)
         } else {
             swal({
-                title: "Game ended",
-                text: `DRAW! Press Esc to restart`,
+                title: "Round ended",
+                text: `DRAW! Press Esc to continue or F5 to restart.`,
                 icon: "success",
                 button: null
             });
@@ -171,8 +171,20 @@ GamePolicy.prototype.getWinner = function () {
     if (currentPlayer.matchScore === 6 || secondPlayer.matchScore === 6 || currentPlayer.matchScore + secondPlayer.matchScore === 6){
         if (currentPlayer.matchScore > secondPlayer.matchScore){
             swal({
-                title: "Game ended",
-                text: `Player ${currentPlayer.playerNum} won the game! Press Esc to continue`,
+                title: "Round ended",
+                text: `Player ${currentPlayer.playerNum} won the game! Press Esc to continue or F5 to restart.`,
+                icon: "success",
+                button: null
+            });
+            setTimeout(() =>{
+                ROUNDS++
+                this.reset()
+                poolGame.start()
+            }, 2000)
+        } else if (currentPlayer.matchScore < secondPlayer.matchScore) {
+            swal({
+                title: "Round ended",
+                text: `Player ${secondPlayer.playerNum} won the game! Press Esc to continue or F5 to restart.`,
                 icon: "success",
                 button: null
             });
@@ -183,8 +195,8 @@ GamePolicy.prototype.getWinner = function () {
             }, 2000)
         } else {
             swal({
-                title: "Game ended",
-                text: `Player ${secondPlayer.playerNum} won the game! Press Esc to continue`,
+                title: "Round ended",
+                text: `DRAW! Press Esc to continue or F5 to restart.`,
                 icon: "success",
                 button: null
             });
