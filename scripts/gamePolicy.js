@@ -28,9 +28,9 @@ GamePolicy.prototype.reset = function() {
     secondPlayer.playerNum = 2;
     secondPlayer.playerHealth = 3;
     secondPlayer.matchScore = 0;
-    secondPlayer.attempt = 5 - ROUNDS;
+    secondPlayer.attempt = 5 - (ROUNDS - 1);
     if (secondPlayer.attempt < 3 ){
-        ROUNDS = 0;
+        ROUNDS = 1;
         secondPlayer.attempt = 5;
     }
 }

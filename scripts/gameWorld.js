@@ -88,7 +88,7 @@ GameWorld.prototype.isBallsMoves = function (){
 GameWorld.prototype.checkForSwitch = function (){
     if (currentPlayer.attempt === 0 && secondPlayer.attempt !== 0){
         this.policy.switchTurns()
-    } else if (currentPlayer.matchScore === currPlayerScoreTemp) {
+    } else if (currentPlayer.matchScore === currPlayerScoreTemp && secondPlayer.attempt !== 0) {
         this.policy.switchTurns()
         currPlayerScoreTemp = currentPlayer.matchScore;
     } else if (currentPlayer.matchScore > currPlayerScoreTemp) {
