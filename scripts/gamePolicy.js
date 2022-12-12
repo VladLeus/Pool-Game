@@ -105,7 +105,7 @@ GamePolicy.prototype.getWinner = function () {
     if (currentPlayer.playerHealth === 0){
         swal({
             title: "Game ended",
-            text: `Player ${currentPlayer.playerNum} lost all his hearts. Press Esc to restart`,
+            text: `Player ${currentPlayer.playerNum} lost all his hearts. Press Esc to continue`,
             icon: "error",
             button: null
         });
@@ -117,7 +117,7 @@ GamePolicy.prototype.getWinner = function () {
     } else if (secondPlayer.playerHealth === 0) {
         swal({
             title: "Game ended",
-            text: `Player ${secondPlayer.playerNum} lost all his hearts. Press Esc to restart`,
+            text: `Player ${secondPlayer.playerNum} lost all his hearts. Press Esc to continue`,
             icon: "error",
             button: null
         });
@@ -132,7 +132,7 @@ GamePolicy.prototype.getWinner = function () {
         if (currentPlayer.matchScore > secondPlayer.matchScore){
             swal({
                 title: "Game ended",
-                text: `Player ${currentPlayer.playerNum} won the game! Press Esc to restart`,
+                text: `Player ${currentPlayer.playerNum} won the game! Press Esc to continue`,
                 icon: "success",
                 button: null
             });
@@ -144,7 +144,7 @@ GamePolicy.prototype.getWinner = function () {
         } else if (currentPlayer.matchScore < secondPlayer.matchScore) {
             swal({
                 title: "Game ended",
-                text: `Player ${secondPlayer.playerNum} won the game! Press Esc to restart`,
+                text: `Player ${secondPlayer.playerNum} won the game! Press Esc to continue`,
                 icon: "success",
                 button: null
             });
@@ -172,7 +172,7 @@ GamePolicy.prototype.getWinner = function () {
         if (currentPlayer.matchScore > secondPlayer.matchScore){
             swal({
                 title: "Game ended",
-                text: `Player ${currentPlayer.playerNum} won the game! Press Esc to restart`,
+                text: `Player ${currentPlayer.playerNum} won the game! Press Esc to continue`,
                 icon: "success",
                 button: null
             });
@@ -184,7 +184,7 @@ GamePolicy.prototype.getWinner = function () {
         } else {
             swal({
                 title: "Game ended",
-                text: `Player ${secondPlayer.playerNum} won the game! Press Esc to restart`,
+                text: `Player ${secondPlayer.playerNum} won the game! Press Esc to continue`,
                 icon: "success",
                 button: null
             });
