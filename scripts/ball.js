@@ -9,7 +9,6 @@ function Ball(position, color){
     this.moving = false
     this.sprite = getBallsSpritesByCol(color)
     this.ballColor = color
-    this.inHole = false
 }
 
 Ball.prototype.update = function (delta){
