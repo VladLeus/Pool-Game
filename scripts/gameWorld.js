@@ -93,8 +93,5 @@ GameWorld.prototype.checkForSwitch = function (){
         currPlayerScoreTemp = currentPlayer.matchScore;
     } else if (currentPlayer.matchScore > currPlayerScoreTemp) {
         currPlayerScoreTemp = currentPlayer.matchScore
-    } else if (currentPlayer.attempt === 0 && secondPlayer.attempt !== 0){
-        this.policy.switchTurns()
     }
-
 }
