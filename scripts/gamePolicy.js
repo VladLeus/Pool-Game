@@ -16,9 +16,11 @@ function GamePolicy(){
 }
 
 GamePolicy.prototype.reset = function() {
+    this.scored = true
     currentPlayer.playerNum = 1;
     currentPlayer.playerHealth = 3;
     currentPlayer.matchScore = 0;
+    currPlayerScoreTemp = currentPlayer.matchScore
     currentPlayer.attempt = 5 - (ROUNDS - 1);
     if (currentPlayer.attempt < 3 ){
         ROUNDS = 1;
