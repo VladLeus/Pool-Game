@@ -1,5 +1,7 @@
 Here is my custom pool-game using only js.
 
+Run this command in terminal first: npm install sweetalert --save
+
 \===================================RULES===================================/
 1.Game is for two players.
 2.Players have the following properties:
